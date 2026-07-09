@@ -10,7 +10,7 @@ export interface CartLine { variantId: string; quantity: number; overridePrice?:
 export interface CheckoutRequest {
   storeId: string; cashierId: string; cashSessionId: string | null;
   lines: CartLine[]; customerId: string | null; couponCode: string | null;
-  payments: { item1: string; item2: number; item3: string | null }[];
+  payments: { method: string; amount: number; reference: string | null }[];
 }
 
 export interface CheckoutResult { saleId: string; invoiceNo: string; total: number; loyaltyEarned: number; }
