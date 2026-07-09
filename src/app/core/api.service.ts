@@ -20,7 +20,7 @@ export class ApiService {
     const body: CheckoutRequest = {
       storeId: this.auth.storeId(), cashierId: this.auth.userId(), cashSessionId: null,
       lines, customerId: null, couponCode: null,
-      payments: [{ item1: method, item2: total, item3: null }],
+      payments: [{ method: method, amount: total, reference: null }],
     };
     return firstValueFrom(this.http.post<CheckoutResult>(`${this.base}/api/pos/checkout`, body));
   }
