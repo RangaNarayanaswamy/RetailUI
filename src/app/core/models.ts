@@ -20,11 +20,6 @@ export interface ReorderSuggestion {
   onHand: number; weeklySold: number; suggestedQty: number; rationale: string;
 }
 
-export interface SaleForReturn {
-  saleId: string; invoiceNo: string; soldAt: string; total: number;
-  customerPhone: string | null;
-  lines: SaleLineForReturn[];
-}
 export interface SaleLineForReturn {
   saleLineId: string; display: string; sku: string;
   sold: number; alreadyReturned: number; unitPrice: number; lineTotal: number;
