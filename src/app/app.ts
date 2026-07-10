@@ -13,6 +13,7 @@ import { AuthService } from './core/auth.service';
         <a routerLink="/">Billing</a>
         @if (auth.role() !== 'Cashier') {
           <a routerLink="/returns">Returns</a>
+          <a routerLink="/inventory">Inventory</a>
           <a routerLink="/reorders">Reorder queue</a>
         }
         <span class="spacer"></span>
