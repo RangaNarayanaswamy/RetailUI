@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { AuthService } from './auth.service';
-import { CartLine, CheckoutRequest, CheckoutResult, ReorderSuggestion, VariantLookup } from './models';
+import { CartLine, CheckoutRequest, CheckoutResult, ReorderSuggestion, ReturnResult, SaleForReturn, VariantLookup } from './models';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
@@ -25,8 +25,31 @@ export class ApiService {
     return firstValueFrom(this.http.post<CheckoutResult>(`${this.base}/api/pos/checkout`, body));
   }
 
+  findSale(invoiceNo: string) {
+    return firstValueFrom(this.http.get<SaleLookup>(
+      `${this.base}/api/pos/sales`, { params: { invoice: invoiceNo } }));
+  }
+
+  submitReturn(saleId: string, lines: { saleLineId: string; quantity: number; restock: boolean }[],
+               reason: string, refundMethod: string) {
+    return firstValueFrom(this.http.post<ReturnResult>(`${this.base}/api/pos/returns`,
+      { saleId, lines, reason, refundMethod }));
+  }
+
   reorderQueue() {
     return firstValueFrom(this.http.get<ReorderSuggestion[]>(`${this.base}/api/reorders`));
+  }
+
+  saleForReturn(invoiceNo: string) {
+    return firstValueFrom(this.http.get<SaleForReturn>(
+      `${this.base}/api/returns/sale/${encodeURIComponent(invoiceNo)}`));
+  }
+
+  processReturn(saleId: string,
+    lines: { saleLineId: string; quantity: number; restock: boolean }[],
+    reason: string, refundMethod: string) {
+    return firstValueFrom(this.http.post<ReturnResult>(`${this.base}/api/returns`,
+      { saleId, lines, reason, refundMethod }));
   }
 
   createDraftPos(variantIds: string[]) {
