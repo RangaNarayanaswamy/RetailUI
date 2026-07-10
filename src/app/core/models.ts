@@ -35,3 +35,11 @@ export interface SaleLookup {
   lines: SaleLookupLine[];
 }
 export interface ReturnResult { creditNoteNo: string; totalRefund: number; refundMethod: string; }
+
+export interface VariantGridRow {
+  variantId: string; skuCode: string; product: string; category: string;
+  colour: string | null; size: string | null;
+  mrp: number; sellingPrice: number; costPrice: number;
+  onHand: number; reorderAt: number; reorderQty: number; stockValue: number;
+}
+export interface PagedVariants { rows: VariantGridRow[]; total: number; }
