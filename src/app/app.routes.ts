@@ -4,7 +4,6 @@ import { LoginComponent } from './pages/login.component';
 import { PosComponent } from './pages/pos.component';
 import { ReordersComponent } from './pages/reorders.component';
 import { ReturnsComponent } from './pages/returns.component';
-import { ReturnsComponent } from './pages/returns.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
