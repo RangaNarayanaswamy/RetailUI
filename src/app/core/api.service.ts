@@ -4,7 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { AuthService } from './auth.service';
 import { CartLine, CheckoutRequest, CheckoutResult, ReorderSuggestion,
-         PagedVariants, ReturnResult, SaleLookup, VariantLookup } from './models';
+         CategoryOption, InventoryStats, PagedVariants, ReturnResult, SaleLookup, TxnRow, VariantLookup } from './models';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
@@ -63,6 +63,21 @@ export class ApiService {
   adjustStock(variantId: string, delta: number, reason: string, notes: string | null) {
     return firstValueFrom(this.http.post(
       `${this.base}/api/inventory/adjust`, { variantId, delta, reason, notes }));
+  }
+
+  inventoryStats() {
+    return firstValueFrom(this.http.get<InventoryStats>(`${this.base}/api/inventory/stats`));
+  }
+  categories() {
+    return firstValueFrom(this.http.get<CategoryOption[]>(`${this.base}/api/inventory/categories`));
+  }
+  variantTransactions(variantId: string) {
+    return firstValueFrom(this.http.get<TxnRow[]>(
+      `${this.base}/api/inventory/variants/${variantId}/transactions`));
+  }
+  rebuildOnHand(variantId: string) {
+    return firstValueFrom(this.http.post<{ onHand: number }>(
+      `${this.base}/api/inventory/variants/${variantId}/rebuild`, {}));
   }
 
   // ---- reorders ----
