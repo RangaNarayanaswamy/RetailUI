@@ -43,3 +43,9 @@ export interface VariantGridRow {
   onHand: number; reorderAt: number; reorderQty: number; stockValue: number;
 }
 export interface PagedVariants { rows: VariantGridRow[]; total: number; }
+
+export interface InventoryStats {
+  skus: number; stockValue: number; lowStock: number; outOfStock: number;
+}
+export interface CategoryOption { categoryId: string; name: string; }
+export interface TxnRow { at: string; kind: string; qty: number; detail: string; }
