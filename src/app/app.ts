@@ -11,7 +11,10 @@ import { AuthService } from './core/auth.service';
       <nav class="topbar">
         <span class="brand">Priya's Boutique</span>
         <a routerLink="/">Billing</a>
-        <a routerLink="/reorders">Reorder queue</a>
+        @if (auth.role() !== 'Cashier') {
+          <a routerLink="/returns">Returns</a>
+          <a routerLink="/reorders">Reorder queue</a>
+        }
         <span class="spacer"></span>
         <span class="who">{{ auth.userName() }} · {{ auth.role() }}</span>
         <button class="link" (click)="logout()">Switch user</button>
