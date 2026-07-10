@@ -4,7 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { AuthService } from './auth.service';
 import { CartLine, CheckoutRequest, CheckoutResult, ReorderSuggestion,
-         ReturnResult, SaleLookup, VariantLookup } from './models';
+         PagedVariants, ReturnResult, SaleLookup, VariantLookup } from './models';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
@@ -38,6 +38,31 @@ export class ApiService {
                reason: string, refundMethod: string) {
     return firstValueFrom(this.http.post<ReturnResult>(`${this.base}/api/pos/returns`,
       { saleId, lines, reason, refundMethod }));
+  }
+
+  // ---- inventory ----
+  variantsPage(startRow: number, endRow: number,
+               sortField: string | null, sortDir: string | null, search: string) {
+    const params: Record<string, string> = {
+      startRow: String(startRow), endRow: String(endRow), search };
+    if (sortField) { params['sortField'] = sortField; params['sortDir'] = sortDir ?? 'asc'; }
+    return firstValueFrom(this.http.get<PagedVariants>(
+      `${this.base}/api/inventory/variants`, { params }));
+  }
+
+  updatePrice(variantId: string, sellingPrice: number, mrp: number | null) {
+    return firstValueFrom(this.http.patch(
+      `${this.base}/api/inventory/variants/${variantId}/price`, { sellingPrice, mrp }));
+  }
+
+  updateReorder(variantId: string, reorderAt: number, reorderQty: number) {
+    return firstValueFrom(this.http.patch(
+      `${this.base}/api/inventory/variants/${variantId}/reorder`, { reorderAt, reorderQty }));
+  }
+
+  adjustStock(variantId: string, delta: number, reason: string, notes: string | null) {
+    return firstValueFrom(this.http.post(
+      `${this.base}/api/inventory/adjust`, { variantId, delta, reason, notes }));
   }
 
   // ---- reorders ----
